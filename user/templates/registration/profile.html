@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    <title>{{user.username}}'s Profile</title>
+
+{% endblock %}
+
+{% block header %}
+    <h2 class="text-center">
+
+        {% if request.user == entry.author %}
+        Your Entries
+        {% else %}
+        {{user.username}}'s entries
+        {% endif %}
+    </h2>
+
+{% endblock header %}
+
+{% block content %}
+{% for entry in entries %}
+<div class="card mb-3">
+    <h4 class="card-header d-flex justify-content-around">
+        <p class="d-inline-block"> Date posted : <a href="{% url 'learning_logs:month' entry.date_added.month %}">{{ entry.date_added|date:'M-d' }} </a></p>
+         {% if request.user == entry.author %}
+            <p class="d-inline text-right">Entry Creator:<a class="d-inline-block display-5 text-decoration-none" href="{% url 'user:profile' entry.author.id %}"> You</a></p>
+             <a class="d-inline-block display-5 text-decoration-none" href="{% url 'learning_logs:edit_entry' entry.id %}">Edit entry</a>
+             <a class="d-inline-block display-5 text-decoration-none" href="{% url 'learning_logs:delete_entry' entry.id %}">Delete entry</a>
+            {% else %}
+            <p class="d-inline text-right">Entry Creator:<a class="d-inline-block display-5 text-decoration-none" href="{% url 'user:profile' entry.author.id %}">{{entry.author.username}}</a></p>
+             {% endif %}
+     </h4>
+    <div class="card-body">
+        <a href="{% url 'learning_logs:entry' entry.id %}">{{ entry.text|truncatechars:200 }}</a>
+    </div>
+    <footer class="footer">
+       <a href="{% url 'learning_logs:topic' entry.topic.id %}" class="text-decoration-none h5 pl-3 d-inline-block" >{{entry.topic}}</a>
+    </footer>
+</div>
+{% empty %}
+    <p>There are no entries from you yet.</p>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    <title>Registration | BLOG</title>
+
+{% endblock title %}
+{% block header %}
+
+    <h1 class="display-4 text-center">To create new account fill the form below</h1>
+
+{% endblock %}
+{% block content %}
+{% load bootstrap4 %}
+    <form class="form" action="{% url 'user:register' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+        <button class="btn btn-success" name="submit">Register</button>
+        {% endbuttons %}
+        <input type="hidden" name="next" value="{% url 'learning_logs:home' %}">
+    </form>
+    <p class="text-right">Already have account ? Log in <a href="{% url 'user:login' %}">here</a></p>
+{% endblock %}

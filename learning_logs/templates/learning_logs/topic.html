@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Posts with topic : {{topic.text}}</title>
+{% endblock title %}
+
+{% block header %}
+    <div class="border bg-dark text-light p-5 mb-5">
+    <h2 class="display-4"> Posts with topic : <code>{{topic}}</code> </h2>
+    {% if request.user.is_authenticated %}
+    <a class="text-decoration-none lead" href="{% url 'learning_logs:new_entry' topic.id %}">Create entry to this topic. </a>
+    {% else %}
+    <p>To create new entry please <a href="{% url 'user:login' %}">Login</a> or <a href="{% url 'user:register' %}">Register</a> account</p>
+    {% endif %}
+</div>
+{% endblock header %}
+
+{% block content %}
+    {% for entry in entries %}
+        <div class="card mb-3">
+            <h4 class="card-header d-flex justify-content-around">
+               <p class="d-inline-block"> Date posted : <a href="{% url 'learning_logs:month' entry.date_added.month %}">{{ entry.date_added|date:'M-d' }} </a></p>
+                {% if request.user == entry.author %}
+                    <a class="d-inline-block display-5 text-decoration-none" href="{% url 'learning_logs:edit_entry' entry.id %}">Edit entry</a>
+                    <a class="d-inline-block display-5 text-decoration-none" href="{% url 'learning_logs:delete_entry' entry.id %}">Delete entry</a>
+                    <p class="d-inline-block text-right">Entry Creator: <a class="d-inline-block display-5 text-decoration-none" href="{% url 'user:profile' entry.author.id %}"> You</a></p>
+                {% else %}
+                <p class="d-inline-block text-right">Entry Creator:<a class="d-inline-block display-5 text-decoration-none" href="{% url 'user:profile' entry.author.id %}">{{entry.author.username}}</a></p>
+                {% endif %}
+            </h4>
+            <div class="card-body">
+                <a href="{% url 'learning_logs:entry' entry.id %}">{{ entry.text|truncatechars:500 }}</a>
+            </div>
+        </div>
+        {% empty %}
+            <p>There are no entries for this topic yet.</p>
+    {% endfor %}
+{% endblock content %}

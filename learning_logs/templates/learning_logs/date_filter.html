@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title> {{month}} posts | BLOG</title>
+{% endblock title %}
+
+{% block header %}
+    <p class="d-inline-block text-center display-4"> Posts created in {{month}} </p>
+{% endblock header %}
+
+{% block content %}
+    {% for date in dates %}
+
+    <div class="card mb-3">
+        <h4 class="card-header d-flex justify-content-around">
+           
+            {% if request.user == date.author %}
+                <a class="d-inline-block display-5 text-decoration-none" href="{% url 'learning_logs:edit_entry' date.id  %}">Edit entry</a>
+                <a class="d-inline-block display-5 text-decoration-none" href="#">Delete entry</a>
+                <p class="d-inline-block text-right">Entry Creator: <a class="d-inline-block display-5 text-decoration-none" href="{% url 'user:profile' request.user.id %}"> You</a></p>
+            {% else %}
+            <p class="d-inline-block text-right">Entry Creator:<a class="d-inline-block display-5 text-decoration-none" href="">{{date.author.username}}</a></p>
+            {% endif %}
+        </h4>
+        <div class="card-body">
+            <a href="{% url 'learning_logs:entry' date.id %}">{{ date.text|truncatechars:500 }}</a>
+        </div>
+        
+    <footer class="footer">
+        <p class="pl-2"> Topic :  <a href="{% url 'learning_logs:topic' date.topic.id %}" class="text-decoration-none d-inline-block" >{{date.topic}}</a></p>
+     </footer>
+    </div>
+    {% empty %}
+        <p>There are no entries for this topic yet.</p>
+{% endfor %}
+{% endblock %}

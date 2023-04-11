@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Entry created by {{entry.author}} | BLOG</title>
+{% endblock title %}
+
+{% block header %}
+    <div class="border bg-dark text-light p-5 mb-5">
+        <h1 class="f6 text-light">Entry created by <a href="{% url 'user:profile' user.id %}">{{entry.author}}</a> with topic <kbd><a href="{% url 'learning_logs:topic' topic.id %}">{{topic.text}}</a></kbd></h1>
+</div>
+{% endblock header %}
+
+{% block content %}
+        <div class="card mb-3">
+            <h4 class="card-header d-flex justify-content-around">
+               <p class="d-inline-block"> Date posted : {{ entry.date_added|date:'M-d' }} </p>
+            </h4>
+            <div class="card-body">
+                {{ entry.text|linebreaks }}
+            </div>
+        </div>
+{% endblock content %}

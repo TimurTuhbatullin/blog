@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+
+    <title>Topics | BLOG</title>
+
+{% endblock title %}
+{% block header %}
+
+    <h1 class="display-3">Topics: </h1>
+
+{% endblock header %}
+{% block content %}
+{% if request.user.is_authenticated %}
+<a class="text-decoration-none text-right d-block lead float-right" href="{% url 'learning_logs:new_topic'%}">Create a new topic. </a>
+{% else %}
+<p>To create new topic please <a href="{% url 'user:login' %}">Login</a> or <a href="{% url 'user:register' %}">Register</a> account</p>
+{% endif %}
+    <div class="text-dark" >
+    {% for topic in topics %}
+        <a class="display-4 p-2 text-decoration-none m-2" href="{% url 'learning_logs:topic' topic.id %}"><kbd>{{topic.text}}</kbd></a>
+    {% empty %}
+        <p>Sorry there are no topics added yet</p>
+    {% endfor %}
+    </div>
+{% endblock %}

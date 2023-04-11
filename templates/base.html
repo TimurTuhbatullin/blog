@@ -1,0 +1,60 @@
+{% load bootstrap4 %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/TEAM.png' %}">
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    {% block title %} {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+        <a class = "navbar-brand" href="{% url 'learning_logs:home' %}">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+            data-target="#navbarCollapse" aria-controls="navbarCollapse"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                 <li class="nav-item">
+                <a class="nav-link" href="{% url 'learning_logs:topics'%}">
+                Topics</a></li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                     {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                     <a href="{% url 'user:profile' user.id %}" class="navbar-text">Hello, {{ request.user.username }}.</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user:register' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user:login' %}">Log in</a></li>
+                        {% endif %}
+                        </ul>
+                         </div>
+                        </nav>
+    <main class="container">
+        {% block header %}
+            
+        {% endblock %}
+        {% block content %}
+    
+        {% endblock %}
+    </main>  
+</body>
+</html>

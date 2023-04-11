@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    <title>Home Page | BLOG</title>
+
+{% endblock %}
+
+{% block header %}
+
+    <div class="p-5 border border-danger mb-5">
+        <h1 class="dispay-3">Track your learning</h1>
+        <p class="lead">Make your own Learning Log, and keep a list of the topics you're learning about. Whenever you learn something new about a topic, make an entry summarizing what you've learned.</p>
+            {% if user.is_authenticated %}
+            
+            {% else %}
+            <a class="btn btn-lg btn-primary" href="{% url 'user:register' %}" role="button">Register &raquo;</a>
+            {% endif %}
+    </div>
+
+{% endblock header %}
+
+{% block content %}
+<h2>Popular categories: </h2>
+    {% for topic in topics %}
+
+        <a class="d-inline-block pr-5 lead h-1 font-weight-bold" href="{% url 'learning_logs:topic' topic.id %}">{{topic.text}}</a>
+
+    {% endfor %}
+{% endblock %}
